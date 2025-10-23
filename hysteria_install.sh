@@ -127,14 +127,17 @@ sed -i '/User=/d' /etc/systemd/system/hysteria-server.service
 sed -i '/User=/d' /etc/systemd/system/hysteria-server@.service
 systemctl daemon-reload
 
+#Ensure process has enough permission
+chown root:root /etc/hysteria/*
+chmod 600 /etc/hysteria/server.crt /etc/hysteria/server.key
+chmod 644 /etc/hysteria/config.yaml
+
 # Start and restart service
 systemctl start hysteria-server.service
 systemctl restart hysteria-server.service
 
 # Check status
 systemctl status hysteria-server.service
-
-
 
 # Performance optimization
 sysctl -w net.core.rmem_max=16777216
@@ -144,10 +147,7 @@ sysctl -w net.core.wmem_max=16777216
 echo "net.core.rmem_max=16777216" >> /etc/sysctl.conf
 echo "net.core.wmem_max=16777216" >> /etc/sysctl.conf
 
-#Ensure process has enough permission
-chown root:root /etc/hysteria/*
-chmod 600 /etc/hysteria/server.crt /etc/hysteria/server.key
-chmod 644 /etc/hysteria/config.yaml
+
 
 sysctl -p
 
