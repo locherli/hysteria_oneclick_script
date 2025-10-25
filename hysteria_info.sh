@@ -46,13 +46,13 @@ else
     SNI="unknown"
   fi
   INSECURE=1
-  # Get public IP (prefer IPv6 if available)
+  # Get public IP (prefer IPv4 if available)
   IPV6=$(curl -s -6 ifconfig.co 2>/dev/null)
-  if [ -n "$IPV6" ]; then
-    HOST="[$IPV6]"
+  IPV4=$(curl -s -4 ifconfig.co 2>/dev/null)
+  if [ -n "$IPV4" ]; then
+    HOST="[$IPV4]"
   else
-    IPV4=$(curl -s -4 ifconfig.co 2>/dev/null)
-    HOST="$IPV4"
+    HOST="$IPV6"
   fi
 fi
 
@@ -68,7 +68,9 @@ echo "Host: $HOST"
 echo "Insecure: $INSECURE"
 
 # Generate proxy URL
-PROXY_URL="hysteria2://${PASSWORD}@${HOST}:${PORT}?sni=${SNI}&insecure=${INSECURE}#Hysteria2"
+PROXY_URL_v4="hysteria2://${PASSWORD}@${IPV4}:${PORT}?sni=${SNI}&insecure=${INSECURE}#Hysteria2"
+PROXY_URL_v6="hysteria2://${PASSWORD}@${IPV6}:${PORT}?sni=${SNI}&insecure=${INSECURE}#Hysteria2"
 
 echo "Generated Proxy URL:"
-echo "$PROXY_URL"
+echo "$PROXY_URL_v4"
+echo "$PROXY_URL_v6"
