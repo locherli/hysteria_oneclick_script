@@ -69,7 +69,7 @@ echo "Insecure: $INSECURE"
 
 # Generate proxy URL
 if [ -n "$IPV4" ]; then
-  PROXY_URL_v4="hysteria2://${PASSWORD}@[${IPV4}]:${PORT}?sni=${SNI}&insecure=${INSECURE}#Hysteria2"
+  PROXY_URL_v4="hysteria2://${PASSWORD}@${IPV4}:${PORT}?sni=${SNI}&insecure=${INSECURE}#Hysteria2"
 else
   PROXY_URL_v4=""
 fi
