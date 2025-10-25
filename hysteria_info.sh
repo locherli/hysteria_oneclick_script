@@ -68,9 +68,18 @@ echo "Host: $HOST"
 echo "Insecure: $INSECURE"
 
 # Generate proxy URL
-PROXY_URL_v4="hysteria2://${PASSWORD}@${IPV4}:${PORT}?sni=${SNI}&insecure=${INSECURE}#Hysteria2"
-PROXY_URL_v6="hysteria2://${PASSWORD}@${IPV6}:${PORT}?sni=${SNI}&insecure=${INSECURE}#Hysteria2"
+if [ -n "$IPV4" ]; then
+  PROXY_URL_v4="hysteria2://${PASSWORD}@[${IPV4}]:${PORT}?sni=${SNI}&insecure=${INSECURE}#Hysteria2"
+else
+  PROXY_URL_v4=""
+fi
+
+if [ -n "$IPV6" ]; then
+  PROXY_URL_v6="hysteria2://${PASSWORD}@[${IPV6}]:${PORT}?sni=${SNI}&insecure=${INSECURE}#Hysteria2"
+else
+  PROXY_URL_v6=""
+fi
 
 echo "Generated Proxy URL:"
-echo "$PROXY_URL_v4"
-echo "$PROXY_URL_v6"
+[ -n "$PROXY_URL_v4" ] && echo "$PROXY_URL_v4"
+[ -n "$PROXY_URL_v6" ] && echo "$PROXY_URL_v6"
