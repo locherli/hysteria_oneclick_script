@@ -13,12 +13,6 @@ if [ "$EUID" -ne 0 ]; then
   exit 1
 fi
 
-# Check Debian version
-DEB_VERSION=$(lsb_release -rs)
-if [ 1 -eq "$(echo "${DEB_VERSION} < 11" | bc)" ]; then
-  echo "This script requires Debian 11 or higher. Current version: ${DEB_VERSION}"
-  exit 1
-fi
 
 # Update system and install prerequisites
 apt update && apt upgrade -y
