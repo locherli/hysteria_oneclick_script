@@ -2,6 +2,8 @@
 
 This script can simplify the config process of Hysteria.
 
+Language: [English](README.md) | [中文](README.zh-CN.md)
+
 ## Quick usage
 
 Use this command to install Hysteria:
