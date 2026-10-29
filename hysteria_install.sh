@@ -78,9 +78,6 @@ tls:
   key: /etc/hysteria/server.key
 EOF
 )
-
-  # Extract SHA256 fingerprint for client configuration guidance
-  CERT_SHA256=$(openssl x509 -noout -fingerprint -sha256 -in /etc/hysteria/server.crt | awk -F= '{print $2}' | tr -d ' \r\n')
 fi
 
 # Create config.yaml
@@ -154,13 +151,5 @@ echo "Certificate type: ${CERT_TYPE}"
 if [ "$CERT_TYPE" == "acme" ]; then
   echo "Hysteria will automatically handle ACME certificate issuance on start."
   echo "Ensure port 80 is accessible for ACME challenges."
-else
-  echo ""
-  echo "Client TLS configuration recommendation for self-signed certificate:"
-  echo "tls:"
-  echo "  insecure: true"
-  if [ -n "$CERT_SHA256" ]; then
-    echo "  pinSHA256: ${CERT_SHA256}"
-  fi
 fi
 echo "Restart service if changes made: systemctl restart hysteria-server.service"
