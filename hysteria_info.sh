@@ -42,8 +42,10 @@ else
   CERT_PATH=$(grep '^  cert:' "$CONFIG" | awk '{print $2}' | tr -d ' ')
   if [ -f "$CERT_PATH" ]; then
     SNI=$(openssl x509 -in "$CERT_PATH" -noout -subject | sed 's/.*CN = //' | tr -d ' ')
+    PIN_SHA256=$(openssl x509 -noout -fingerprint -sha256 -in "$CERT_PATH" | awk -F= '{print $2}' | tr -d ' \r\n')
   else
     SNI="unknown"
+    PIN_SHA256=""
   fi
   INSECURE=1
   # Get public IP (prefer IPv4 if available)
@@ -66,16 +68,25 @@ echo "SNI: $SNI"
 echo "Masquerade URL: ${MASQ_URL:-Not set}"
 echo "Host: $HOST"
 echo "Insecure: $INSECURE"
+if [ -n "$PIN_SHA256" ]; then
+  echo "Cert SHA256 Fingerprint: $PIN_SHA256"
+fi
+
+# PIN_SHA256 query parameter
+PIN_PARAM=""
+if [ -n "$PIN_SHA256" ]; then
+  PIN_PARAM="&pinSHA256=${PIN_SHA256}"
+fi
 
 # Generate proxy URL
 if [ -n "$IPV4" ]; then
-  PROXY_URL_v4="hy2://${PASSWORD}@${IPV4}:${PORT}?sni=${SNI}&insecure=${INSECURE}#Hysteria2"
+  PROXY_URL_v4="hy2://${PASSWORD}@${IPV4}:${PORT}?sni=${SNI}&insecure=${INSECURE}${PIN_PARAM}#Hysteria2"
 else
   PROXY_URL_v4=""
 fi
 
 if [ -n "$IPV6" ]; then
-  PROXY_URL_v6="hy2://${PASSWORD}@[${IPV6}]:${PORT}?sni=${SNI}&insecure=${INSECURE}#Hysteria2"
+  PROXY_URL_v6="hy2://${PASSWORD}@[${IPV6}]:${PORT}?sni=${SNI}&insecure=${INSECURE}${PIN_PARAM}#Hysteria2"
 else
   PROXY_URL_v6=""
 fi
