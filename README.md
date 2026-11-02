@@ -9,13 +9,13 @@ Language: [English](README.md) | [中文](README.zh-CN.md)
 Use this command to install Hysteria:
 
 ```bash
-sudo bash <(curl -Ls https://raw.githubusercontent.com/locherli/hysteria_oneclick_script/master/hysteria_install.sh)
+curl -fsSL https://raw.githubusercontent.com/locherli/hysteria_oneclick_script/master/hysteria_install.sh -o hysteria_install.sh && sudo sh ./hysteria_install.sh
 ```
 
 Use this command to get the basic info and URL of your proxy:
 
 ```bash
-bash <(curl -Ls https://raw.githubusercontent.com/locherli/hysteria_oneclick_script/master/hysteria_info.sh)
+curl -fsSL https://raw.githubusercontent.com/locherli/hysteria_oneclick_script/master/hysteria_info.sh -o hysteria_info.sh && sudo sh ./hysteria_info.sh
 ```
 
 ## Field configuration
